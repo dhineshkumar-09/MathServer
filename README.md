@@ -1,4 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
+
 ## Date: 05/12/2024
 
 ## AIM:
@@ -35,111 +36,117 @@ Publish the website in the given URL.
 ```
 <html>
 <head>
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<title>Power of a Lamp Filament</title>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<style type="text/css">
-body 
-{
-background-color:lightblue;
-}
-.edge {
-width: 1400px;
-margin-left: auto;
-margin-right: auto;
-padding-top: 250px;
-padding-left: 300px;
-}
-.box {
-display:block;
-border: light dashed black;
-width: 600px;
-min-height: 400px;
-font-size: 30px;
-background-color:lightgray;
-}
-.formelt{
-color:black;
-text-align: center;
-margin-top: 8px;
-margin-bottom: 7px;
-}
-h1
-{
-color:light blue;
-text-align: center;
-padding-top: 15px;
-}
-</style>
+    <title>Power Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightgrey;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: darkblue;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px grey;
+            display: inline-block;
+            margin: auto;
+        }
+
+        label {
+            font-weight: bold;
+            color: black;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid black;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: darkblue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: navy;
+        }
+    </style>
 </head>
 <body>
-<div class="edge">
-<div class="box">
-<h1>Power of a Light Filament</h1>
-<form method="POST">
-{% csrf_token %}
-<div class="formelt">
-intensity : <input type="text" name="intensity" value="{{i}}"></input>(in Wm<sup>-2</sup>)<br/>
-</div>
-<div class="formelt">
-resistance : <input type="text" name="resistance" value="{{r}}"></input>(in ohm)<br/>
-</div>
-<div class="formelt">
-<input type="submit" value="Calculate"></input><br/>
-</div>
-<div class="formelt">
-Power : <input type="text" name="power" value="{{power}}"></input>(in W)<br/>
-</div>
-</form>
-</div>
-</div>
+    <h1>Power Calculator</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="I">Enter Current (I in Amps):</label>
+        <input type="number" name="intensity" id="I" value="{{ I }}" required>
+        <br><br>
+        <label for="R">Enter Resistance (R in Ohms):</label>
+        <input type="number" name="resistance" id="R" value="{{ R }}" required>
+        <br><br>
+        <button type="submit">Calculate Power</button>
+        <br><br>
+        <label for="power">Calculated Power (Watts):</label>
+        <input type="number" name="power" id="power" value="{{ power }}" readonly>
+    </form>
 </body>
 </html>
 
 
-views.py
+Views.py
 
 from django.shortcuts import render 
-def rectarea(request): 
+def powercalc(request): 
     context={} 
-    context['area'] = "0" 
-    context['l'] = "0" 
-    context['b'] = "0" 
+    context['power'] = "0" 
+    context['I'] = "0" 
+    context['R'] = "0" 
     if request.method == 'POST': 
         print("POST method is used")
-        l = request.POST.get('length','0')
-        b = request.POST.get('breadth','0')
+        I = request.POST.get('intensity','0')
+        R = request.POST.get('resistance','0')
         print('request=',request) 
-        print('Length=',l) 
-        print('Breadth=',b) 
-        area = int(l) * int(b) 
-        context['area'] = area 
-        context['l'] = l
-        context['b'] = b 
-        print('Area=',area) 
+        print('intensity=',I) 
+        print('resistance=',R) 
+        power = (int(I) * int(I) ) * int(R) 
+        context['power'] = power
+        context['intensity'] = I
+        context['resistance'] = R 
+        print('power=',power) 
     return render(request,'mathapp/math.html',context)
 
 
-urls.py
+Urls.py
 
 from django.contrib import admin 
 from django.urls import path 
 from mathapp import views 
 urlpatterns = [ 
     path('admin/', admin.site.urls), 
-    path('areaofrectangle/',views.rectarea,name="areaofrectangle"),
-    path('',views.rectarea,name="areaofrectangleroot")
+    path('powercalculator/',views.powercalc,name="powercalculator"),
+    path('',views.powercalc,name="powercalculatorroot")
 ]
+
 ```
 
 ## SERVER SIDE PROCESSING:
 
-![alt text](<Screenshot 2024-12-05 145721.png>)
+![image](https://github.com/user-attachments/assets/e66f0133-6773-45e2-8529-eab62f11f0b2)
 
 ## HOMEPAGE:
 
-![alt text](<Screenshot 2024-12-05 145622.png>)
+![image](https://github.com/user-attachments/assets/f887c727-b5f1-450b-916c-aa01adc826ec)
 
 ## RESULT:
 The program for performing server side processing is completed successfully.
